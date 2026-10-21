@@ -1,0 +1,14 @@
+@model Habitacion
+@{ ViewData["Title"] = "Eliminar habitación"; }
+
+<h2>Eliminar habitación</h2>
+<p class="text-danger">¿Seguro que deseas dar de baja esta habitación? (eliminación lógica)</p>
+<dl class="row">
+    <dt class="col-sm-3">Número</dt><dd class="col-sm-9">@Model.Numero</dd>
+    <dt class="col-sm-3">Piso</dt><dd class="col-sm-9">@Model.Piso</dd>
+    <dt class="col-sm-3">Tipo</dt><dd class="col-sm-9">@Model.IdTipoHabitacionNavigation.Nombre</dd>
+</dl>
+<form asp-action="Delete" asp-route-id="@Model.IdHabitacion" method="post">
+    <button class="btn btn-danger">Eliminar</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancelar</a>
+</form>

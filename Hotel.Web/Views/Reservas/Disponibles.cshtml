@@ -1,0 +1,60 @@
+@model List<HabitacionDisponibleVM>?
+@{
+    ViewData["Title"] = "Disponibilidad";
+    DateOnly? ingreso = ViewBag.Ingreso;
+    DateOnly? salida = ViewBag.Salida;
+}
+
+<h2>Habitaciones disponibles</h2>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-auto">
+        <label class="form-label">Ingreso</label>
+        <input type="date" name="ingreso" class="form-control" value="@ingreso?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-auto">
+        <label class="form-label">Salida</label>
+        <input type="date" name="salida" class="form-control" value="@salida?.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-auto align-self-end">
+        <button class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+@if (Model != null)
+{
+    <table class="table table-striped bg-white">
+        <thead>
+            <tr><th>Número</th><th>Piso</th><th>Tipo</th><th>Capacidad</th><th>Precio/noche</th><th>Noches</th><th>Total estimado</th><th></th></tr>
+        </thead>
+        <tbody>
+        @foreach (var h in Model)
+        {
+            <tr>
+                <td>@h.Numero</td>
+                <td>@h.Piso</td>
+                <td>@h.Tipo</td>
+                <td>@h.Capacidad</td>
+                <td>S/ @h.PrecioNoche.ToString("N2")</td>
+                <td>@h.Noches</td>
+                <td>S/ @h.Total.ToString("N2")</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" asp-action="Create"
+                       asp-route-idHabitacion="@h.IdHabitacion"
+                       asp-route-ingreso="@ingreso?.ToString("yyyy-MM-dd")"
+                       asp-route-salida="@salida?.ToString("yyyy-MM-dd")">Reservar</a>
+                </td>
+            </tr>
+        }
+        @if (!Model.Any())
+        {
+            <tr><td colspan="8" class="text-center text-muted">No hay habitaciones libres en ese rango.</td></tr>
+        }
+        </tbody>
+    </table>
+}

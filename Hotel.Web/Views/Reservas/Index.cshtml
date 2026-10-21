@@ -1,0 +1,44 @@
+@model List<ReservaListadoVM>
+@{ ViewData["Title"] = "Reservas"; }
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Reservas</h2>
+    <a class="btn btn-primary" asp-action="Create">Nueva reserva</a>
+</div>
+
+<table class="table table-striped bg-white">
+    <thead>
+        <tr>
+            <th>Huésped</th><th>Hab.</th><th>Ingreso</th><th>Salida</th>
+            <th>Noches</th><th>Total</th><th>Estado</th><th>Observaciones</th><th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var r in Model)
+    {
+        <tr>
+            <td>@r.Huesped</td>
+            <td>@r.Habitacion</td>
+            <td>@r.FechaIngreso.ToString("dd/MM/yyyy")</td>
+            <td>@r.FechaSalida.ToString("dd/MM/yyyy")</td>
+            <td>@r.Noches</td>
+            <td>S/ @r.Total.ToString("N2")</td>
+            <td>@r.Estado</td>
+            <td>@r.Observaciones</td>
+            <td class="text-end">
+                @if (r.PuedeCancelar)
+                {
+                    <form asp-action="Cancelar" asp-route-id="@r.IdReserva" method="post"
+                          onsubmit="return confirm('¿Cancelar esta reserva?');">
+                        <button class="btn btn-sm btn-outline-danger">Cancelar</button>
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+    @if (!Model.Any())
+    {
+        <tr><td colspan="9" class="text-center text-muted">No hay reservas.</td></tr>
+    }
+    </tbody>
+</table>
